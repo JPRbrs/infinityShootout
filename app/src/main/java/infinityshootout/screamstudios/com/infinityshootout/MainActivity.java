@@ -1,21 +1,16 @@
 package infinityshootout.screamstudios.com.infinityshootout;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import java.util.ArrayList;
-
 
 
 public class MainActivity extends AppCompatActivity {
@@ -69,11 +64,37 @@ public class MainActivity extends AppCompatActivity {
                         possible_bs);
                 bs_spinner.setAdapter(bs_adapter);
 
+                final TextView totalMod = rowView.findViewById(R.id.totalMod);
+                SeekBar extraModifiers = rowView.findViewById(R.id.modifiersBS);
+                extraModifiers.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                        int total_mod = (i - 4 ) * 3;
+                        String text_mod;
+                        if (total_mod > 0) {
+                            text_mod = "+ " + Integer.toString(Math.abs(total_mod));
+                        }
+                        else if (total_mod < 0) {
+                            text_mod = " - " + Integer.toString(Math.abs(total_mod));
+                        }
+                        else {
+                            text_mod = Integer.toString(Math.abs(total_mod));
+                        }
+                        totalMod.setText(text_mod);
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+
+                    }
+                });
+
             // rowView.setBackgroundColor(Color.RED);
-
-
-
-
             return rowView;
         }
     }
