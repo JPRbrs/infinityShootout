@@ -14,35 +14,43 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity {
+    //String[] values = new String[] {"Android", "iPhone", "caca"};
+    ArrayList<String> values = new ArrayList<String>();
+    MySimpleArrayAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        values.add("Active troop");
+        values.add("ARO troop");
+
         final ListView listView =(ListView) findViewById(R.id.listview);
-        String[] values = new String[] {"Android", "iPhone", "caca"};
 
         Button addARO_BT = (Button) findViewById(R.id.addARO_BT);
         addARO_BT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("TAG", "clicked");
+                Log.i("TAG", Integer.toString(values.size()));
+                values.add("new troop");
+                adapter.notifyDataSetChanged();
             }
         });
-
-        final MySimpleArrayAdapter adapter = new MySimpleArrayAdapter(
+         adapter = new MySimpleArrayAdapter(
                 this,
                 values);
-        listView.setAdapter(adapter);
+         listView.setAdapter(adapter);
     }
 
     public class MySimpleArrayAdapter extends ArrayAdapter<String>{
         private final Context context;
 
-        public MySimpleArrayAdapter(Context context, String[] values) {
+        public MySimpleArrayAdapter(Context context, ArrayList<String> values) {
             super(context, -1, values);
             this.context = context;
         }
