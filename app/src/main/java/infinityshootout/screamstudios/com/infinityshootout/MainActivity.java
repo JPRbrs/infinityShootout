@@ -32,19 +32,29 @@ public class MainActivity extends AppCompatActivity {
 
         final ListView listView =(ListView) findViewById(R.id.listview);
 
-        Button addARO_BT = (Button) findViewById(R.id.addARO_BT);
+        Button addARO_BT = (Button) findViewById(R.id.add_ARO);
         addARO_BT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("TAG", Integer.toString(values.size()));
                 values.add("new troop");
                 adapter.notifyDataSetChanged();
             }
         });
-         adapter = new MySimpleArrayAdapter(
+
+        Button remove_ARO_BT = (Button) findViewById(R.id.remove_ARO);
+        remove_ARO_BT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (values.size() > 2) {
+                    values.remove(values.size() - 1);
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
+        adapter = new MySimpleArrayAdapter(
                 this,
                 values);
-         listView.setAdapter(adapter);
+        listView.setAdapter(adapter);
     }
 
     public class MySimpleArrayAdapter extends ArrayAdapter<String>{
