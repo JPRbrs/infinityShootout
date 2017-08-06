@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -69,12 +70,7 @@ public class MainActivity extends AppCompatActivity {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View rowView = inflater.inflate(R.layout.rowlayout, parent, false);
-            RadioButton radioButton = rowView.findViewById(R.id.radioButton);
-            Button button = rowView.findViewById(R.id.button);
-            CheckBox checkBox = (CheckBox) findViewById(R.id.checkBox);
-            TextView textView = (TextView) findViewById(R.id.textView);
-            String s = values[position];
-
+            ExpandableListView weapon = (ExpandableListView)findViewById(R.java.)
             return rowView;
         }
     }
