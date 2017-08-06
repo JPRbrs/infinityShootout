@@ -8,19 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.ExpandableListView;
 import android.widget.ListView;
-import android.widget.RadioButton;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -73,10 +67,17 @@ public class MainActivity extends AppCompatActivity {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View rowView = inflater.inflate(R.layout.rowlayout, parent, false);
-            ExpandableListView weapon = (ExpandableListView)findViewById(R.id.weapon);
-            ExpandableListView bs = (ExpandableListView) findViewById(R.id.bs);
-            TextView modifiersTV = (TextView) findViewById(R.id.modifiersTV);
-            SeekBar modifiersSB = (SeekBar) findViewById(R.id.modifiersSB);
+//            Spinner weapon = (Spinner)findViewById(R.id.weapons);
+//            Spinner bs = (Spinner) findViewById(R.id.bs);
+//            TextView modifiersTV = (TextView) findViewById(R.id.modifiersTV);
+//            SeekBar modifiersSB = (SeekBar) findViewById(R.id.modifiersSB);
+//
+//            String[] weapons = new String[] {"HMG", "Combi Rifle", "Light flamethrower", "Grenades"};
+//            ArrayAdapter<String> weapons_adapter = new ArrayAdapter<String>(
+//                    this,
+//                    android.R.layout.simple_spinner_dropdown_item,
+//                    weapons);
+//            weapon.setAdapter(weapons_adapter);
 
             return rowView;
         }
