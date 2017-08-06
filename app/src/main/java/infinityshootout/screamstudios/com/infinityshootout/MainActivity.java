@@ -51,6 +51,14 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        Button shoot = (Button) findViewById(R.id.shootBT);
+        shoot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("TAG", "calculate");
+            }
+        });
         adapter = new MySimpleArrayAdapter(
                 this,
                 values);

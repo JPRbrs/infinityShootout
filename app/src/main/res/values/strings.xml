@@ -9,4 +9,5 @@
     <string name="totalModTV">0</string>
     <string name="addARO_BT_text">Add ARO troop</string>
     <string name="removeARO_BT_text">Remove ARO troop</string>
+    <string name="shoot_BT">SHOOT!</string>
 </resources>
