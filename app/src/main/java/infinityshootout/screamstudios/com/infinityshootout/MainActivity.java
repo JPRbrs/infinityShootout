@@ -3,10 +3,12 @@ package infinityshootout.screamstudios.com.infinityshootout;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -22,16 +24,19 @@ public class MainActivity extends AppCompatActivity {
 
         final ListView listView =(ListView) findViewById(R.id.listview);
         String[] values = new String[] {"Android", "iPhone", "caca"};
-//
-//        final ArrayList<String> list = new ArrayList<String>();
-//        for (int i = 0; i < values.length; i++) {
-//            list.add(values[i]);
-//        }
+
+        Button addARO_BT = (Button) findViewById(R.id.addARO_BT);
+        addARO_BT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("TAG", "clicked");
+            }
+        });
+
         final MySimpleArrayAdapter adapter = new MySimpleArrayAdapter(
                 this,
                 values);
         listView.setAdapter(adapter);
-
     }
 
     public class MySimpleArrayAdapter extends ArrayAdapter<String>{

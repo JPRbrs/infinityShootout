@@ -7,4 +7,5 @@
     <string name="modifiers">Modifiers</string>
     <string name="extra_modifiers">Extra modifiers</string>
     <string name="totalModTV">0</string>
+    <string name="addARO_BT_text">Add ARO troop</string>
 </resources>
