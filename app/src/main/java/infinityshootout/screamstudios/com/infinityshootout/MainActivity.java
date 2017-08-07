@@ -7,19 +7,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
     //String[] values = new String[] {"Android", "iPhone", "caca"};
-    ArrayList<String> values = new ArrayList<String>();
+    ArrayList<Troop> values = new ArrayList<Troop>();
     MySimpleArrayAdapter adapter;
 
     @Override
@@ -27,8 +29,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        values.add("Active troop");
-        values.add("ARO troop");
+        values.add(new Troop());
+        values.add(new Troop());
 
         final ListView listView =(ListView) findViewById(R.id.listview);
 
@@ -36,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         addARO_BT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                values.add("new troop");
+                values.add(new Troop());
                 adapter.notifyDataSetChanged();
             }
         });
@@ -57,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.i("TAG", "calculate");
+                String message = Integer.toString(values.get(0).shoot());
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
             }
         });
         adapter = new MySimpleArrayAdapter(
@@ -65,12 +69,66 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
     }
 
-    public class MySimpleArrayAdapter extends ArrayAdapter<String>{
-        private final Context context;
+    public class Troop {
+        private String weapon;
+        private int bs;
+        private int total_modifier;
 
-        public MySimpleArrayAdapter(Context context, ArrayList<String> values) {
+        public Troop() {
+
+        }
+
+        public String getWeapon() {
+            return weapon;
+        }
+
+        public int getBs() {
+            return bs;
+        }
+
+        public int getTotal_modifier() {
+            return total_modifier;
+        }
+
+        public void setTotalModifier(int total_modifier) {
+            this.total_modifier = total_modifier;
+        }
+        public void setWeapon( String weapon) {
+            this.weapon = weapon;
+        }
+
+        public void setBs(int bs) {
+            this.bs = bs;
+        }
+
+        public int roll_dice () {
+            return  (int) Math.round(Math.random() * 20);
+        }
+
+        public int shoot(){
+            int roll = roll_dice();
+            Log.i("TAG", Integer.toString(roll));
+            Log.i("TAG", Integer.toString(this.bs));
+            if (roll == this.bs){
+                return 0;
+            }
+            else if (roll > this.bs){
+                return -1;
+            }
+            else {
+                return roll;
+            }
+        }
+    }
+
+    public class MySimpleArrayAdapter extends ArrayAdapter {
+        private final Context context;
+        private ArrayList<Troop> troopers;
+
+        public MySimpleArrayAdapter(Context context, ArrayList<Troop> values) {
             super(context, -1, values);
             this.context = context;
+            this.troopers = values;
         }
 
         @Override
@@ -93,7 +151,9 @@ public class MainActivity extends AppCompatActivity {
                         context,
                         android.R.layout.simple_spinner_dropdown_item,
                         possible_bs);
+                bs_spinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());
                 bs_spinner.setAdapter(bs_adapter);
+
 
                 final TextView totalMod = rowView.findViewById(R.id.totalMod);
                 SeekBar extraModifiers = rowView.findViewById(R.id.modifiersBS);
@@ -128,5 +188,21 @@ public class MainActivity extends AppCompatActivity {
             // rowView.setBackgroundColor(Color.RED);
             return rowView;
         }
+    }
+
+    public class CustomOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
+
+        public void onItemSelected(AdapterView<?> parent, View view, int pos,long id) {
+            Toast.makeText(parent.getContext(),
+                    "OnItemSelectedListener : " + parent.getItemAtPosition(pos),
+                    Toast.LENGTH_SHORT).show();
+            //values.get(pos).setBs(10);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> arg0) {
+            // TODO Auto-generated method stub
+        }
+
     }
 }
