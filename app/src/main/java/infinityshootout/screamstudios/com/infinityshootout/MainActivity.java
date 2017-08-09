@@ -20,7 +20,6 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
-    //String[] values = new String[] {"Android", "iPhone", "caca"};
     ArrayList<Troop> values = new ArrayList<Troop>();
     MySimpleArrayAdapter adapter;
 
@@ -30,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         values.add(new Troop());
-        values.add(new Troop());
+        //values.add(new Troop());
 
         final ListView listView =(ListView) findViewById(R.id.listview);
 
@@ -93,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
         public void setTotalModifier(int total_modifier) {
             this.total_modifier = total_modifier;
         }
+
         public void setWeapon( String weapon) {
             this.weapon = weapon;
         }
@@ -102,20 +102,24 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public int roll_dice () {
-            return  (int) Math.round(Math.random() * 20);
+            int roll = (int) Math.round(Math.random() * 20);
+            Log.i("TAG", "Rolled a: " + Integer.toString(roll));
+
+            return roll;
         }
 
         public int shoot(){
             int roll = roll_dice();
-            Log.i("TAG", Integer.toString(roll));
-            Log.i("TAG", Integer.toString(this.bs));
             if (roll == this.bs){
+                Log.i("TAG", "That's a crit!");
                 return 0;
             }
             else if (roll > this.bs){
+                Log.i("TAG", "Over " + Integer.toString(this.bs) + " Failed");
                 return -1;
             }
             else {
+                Log.i("TAG", "Under " + Integer.toString(this.bs) + " Success");
                 return roll;
             }
         }
@@ -124,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
     public class MySimpleArrayAdapter extends ArrayAdapter {
         private final Context context;
         private ArrayList<Troop> troopers;
+        private String[] possible_bs = new String[] {"10", "11", "12", "13", "15", "16"};
 
         public MySimpleArrayAdapter(Context context, ArrayList<Troop> values) {
             super(context, -1, values);
@@ -132,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
                 LayoutInflater inflater = (LayoutInflater) context
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View rowView = inflater.inflate(R.layout.rowlayout, parent, false);
@@ -145,15 +150,31 @@ public class MainActivity extends AppCompatActivity {
                         weapons);
                 weapon.setAdapter(weapons_adapter);
 
-                String[] possible_bs = new String[] {"10", "11", "12", "13", "15", "16"};
                 Spinner bs_spinner = rowView.findViewById(R.id.bs_spinner);
                 ArrayAdapter<String> bs_adapter = new ArrayAdapter<String>(
                         context,
                         android.R.layout.simple_spinner_dropdown_item,
                         possible_bs);
-                bs_spinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());
-                bs_spinner.setAdapter(bs_adapter);
+                bs_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener () {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int pos,long id) {
+                      Toast.makeText(
+                              parent.getContext(),
+                              "Selected BS : " + parent.getItemAtPosition(pos),
+                              Toast.LENGTH_SHORT
+                      ).show();
+                        String bs_string = (String) parent.getItemAtPosition(pos);
+                        troopers.get(position).setBs(Integer.parseInt(bs_string));
+                        Log.i("TAG", parent.getItemAtPosition(pos).toString());
+                        Log.i("TAG", parent.getParentForAccessibility().toString());
+                    }
 
+                    @Override
+                    public void onNothingSelected(AdapterView<?> arg0) {
+                        // TODO Auto-generated method stub
+                    }
+                });
+                bs_spinner.setAdapter(bs_adapter);
 
                 final TextView totalMod = rowView.findViewById(R.id.totalMod);
                 SeekBar extraModifiers = rowView.findViewById(R.id.modifiersBS);
@@ -188,21 +209,8 @@ public class MainActivity extends AppCompatActivity {
             // rowView.setBackgroundColor(Color.RED);
             return rowView;
         }
-    }
-
-    public class CustomOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
-
-        public void onItemSelected(AdapterView<?> parent, View view, int pos,long id) {
-            Toast.makeText(parent.getContext(),
-                    "OnItemSelectedListener : " + parent.getItemAtPosition(pos),
-                    Toast.LENGTH_SHORT).show();
-            //values.get(pos).setBs(10);
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> arg0) {
-            // TODO Auto-generated method stub
-        }
 
     }
+
+
 }
