@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -28,8 +29,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        values.add(new Troop());
-        //values.add(new Troop());
+        values.add(new Troop(true));
+        values.add(new Troop(false));
 
         final ListView listView =(ListView) findViewById(R.id.listview);
 
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         addARO_BT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                values.add(new Troop());
+                values.add(new Troop(false));
                 adapter.notifyDataSetChanged();
             }
         });
@@ -57,9 +58,22 @@ public class MainActivity extends AppCompatActivity {
         shoot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("TAG", "calculate");
-                String message = Integer.toString(values.get(0).shoot());
-                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+                Log.i("TAG", "People in combat: " + Integer.toString(values.size()));
+                HashMap combatRolls = new HashMap();
+                for (Troop t: values) {
+                    if (t.isActive()) {
+                        int[] shoots = new int[3];
+                        for (int i = 0; i < 3; i++) {
+                            shoots[i] = t.shoot();
+                        }
+                        combatRolls.put(t, shoots);
+                    }
+                    else {
+                        int[] shoots = new int[1];
+                        shoots[0] = t.shoot();
+                        combatRolls.put(t, shoots);
+                    }
+                }
             }
         });
         adapter = new MySimpleArrayAdapter(
@@ -72,33 +86,18 @@ public class MainActivity extends AppCompatActivity {
         private String weapon;
         private int bs;
         private int total_modifier;
+        private boolean active;
 
-        public Troop() {
-
-        }
-
-        public String getWeapon() {
-            return weapon;
-        }
-
-        public int getBs() {
-            return bs;
-        }
-
-        public int getTotal_modifier() {
-            return total_modifier;
-        }
-
-        public void setTotalModifier(int total_modifier) {
-            this.total_modifier = total_modifier;
-        }
-
-        public void setWeapon( String weapon) {
-            this.weapon = weapon;
+        public Troop(Boolean active) {
+            this.active = active;
         }
 
         public void setBs(int bs) {
             this.bs = bs;
+        }
+
+        public boolean isActive() {
+            return this.active;
         }
 
         public int roll_dice () {
