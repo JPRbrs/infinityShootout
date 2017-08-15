@@ -17,7 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+//ilemport java.util.HashMap;
+
 
 
 public class MainActivity extends AppCompatActivity {
@@ -59,20 +60,29 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.i("TAG", "People in combat: " + Integer.toString(values.size()));
-                HashMap combatRolls = new HashMap();
+                // HashMap combatRolls = new HashMap();
+                int[] activeShoots = new int[3];
+                int[] reactiveShoots = new int[1];
                 for (Troop t: values) {
                     if (t.isActive()) {
-                        int[] shoots = new int[3];
                         for (int i = 0; i < 3; i++) {
-                            shoots[i] = t.shoot();
+                            activeShoots[i] = t.shoot();
                         }
-                        combatRolls.put(t, shoots);
                     }
                     else {
-                        int[] shoots = new int[1];
-                        shoots[0] = t.shoot();
-                        combatRolls.put(t, shoots);
+                        reactiveShoots[0] = t.shoot();
                     }
+                }
+                java.util.Arrays.sort(activeShoots);
+                java.util.Arrays.sort(reactiveShoots);
+                if (activeShoots[activeShoots.length-1] > reactiveShoots[0]) {
+                    Log.i("TAG", "Active wins");
+                }
+                else if (reactiveShoots[0] > activeShoots[activeShoots.length-1]){
+                    Log.i("TAG", "Reactive wins");
+                }
+                else {
+                    Log.i("TAG", "nothing happens");
                 }
             }
         });
@@ -103,7 +113,6 @@ public class MainActivity extends AppCompatActivity {
         public int roll_dice () {
             int roll = (int) Math.round(Math.random() * 20);
             Log.i("TAG", "Rolled a: " + Integer.toString(roll));
-
             return roll;
         }
 
@@ -111,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
             int roll = roll_dice();
             if (roll == this.bs){
                 Log.i("TAG", "That's a crit!");
-                return 0;
+                return 100;
             }
             else if (roll > this.bs){
                 Log.i("TAG", "Over " + Integer.toString(this.bs) + " Failed");
